@@ -17,6 +17,7 @@ app.on("ready",() => {
 		autoHideMenuBar: true,
 		webPreferences: {
             nodeIntegration: false,
+            preload: `${__dirname}/game.js`
 		}
     })
     
