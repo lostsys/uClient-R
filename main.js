@@ -1,27 +1,27 @@
-const { app, BrowserWindow, screen, globalShortcut,shell} = require('electron');
+const { app, BrowserWindow, screen, globalShortcut, shell} = require('electron');
+const { autoUpdater } = require("electron-updater");
 
 //Disables FPS.
 app.commandLine.appendSwitch('disable-frame-rate-limit');
 app.commandLine.appendSwitch("disable-gpu-vsync");
 
-
-app.on("ready",() => {
-    if (!app.requestSingleInstanceLock()) app.quit();
-
-    //Creates BrowserWindows.
-    let gameWindow = new BrowserWindow({
+function createWindow() {
+     //Creates BrowserWindows.
+     let gameWindow = new BrowserWindow({
 		width: screen.width,
 		height: screen.height,
 		fullscreen: true,
 		show: false,
-		autoHideMenuBar: true,
 		webPreferences: {
             nodeIntegration: false,
             preload: `${__dirname}/game.js`
 		}
     })
-    
+    gameWindow.removeMenu();
     gameWindow.loadURL("https://repuls.io");
+    
+    //AutoUpdater.
+    checkForUpdate();
 
     //Shows Window when Ready. 
     gameWindow.on("ready-to-show",() => {
@@ -39,22 +39,56 @@ app.on("ready",() => {
     globalShortcut.register("F1",() => {
         if (new URL(gameWindow.webContents.getURL()).hostname != "repuls.io") gameWindow.loadURL("https://repuls.io");
     })
-
     globalShortcut.register("F11",() => {
         gameWindow.setFullScreen(!gameWindow.isFullScreen());
     })
-
     globalShortcut.register("F9",() => {
         gameWindow.webContents.openDevTools({
             mode: "undocked"
         });
     })
-
+    globalShortcut.register('CommandOrControl+F5', () => {
+		gameWindow.webContents.reloadIgnoringCache();
+	})
     globalShortcut.register("Alt+F4",() => {
         app.quit();
     })
+
+    app.on("before-quit",() => {
+        globalShortcut.unregisterAll();
+    })
+}
+
+function checkForUpdate(){
+    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.once('update-available', () => {
+        gameWindow.webContents.executeJavaScript(`alert("Update is available and will be installed in the background.")`)
+    })
+    autoUpdater.on('update-downloaded', () => {
+        gameWindow.webContents.executeJavaScript(`alert("The latest update will be installed now.")`).then(() => autoUpdater.quitAndInstall())
+    });
+}
+
+function startRPC(){
+    const RPC = require('discord-rpc');
+    const discord = new RPC.Client({
+        transport: "ipc",
+    });
+	discord.login({
+		clientId:  "788758313919709186"
+    })
+    .then(() => {
+        discord.setActivity({
+            details: "Playing Repuls.io",
+            startTimestamp: Date.now()
+        });
+    })
+    .catch((e) => { console.log(e) })
+}
+
+app.on("ready",() => {
+    if (!app.requestSingleInstanceLock()) app.quit();
+    createWindow();
+    startRPC();
 })
 
-app.on("before-quit",() => {
-    globalShortcut.unregisterAll();
-})
