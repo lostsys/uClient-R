@@ -10,7 +10,11 @@ The client wishes to provide the following:
 * Help the Community to Build a Client!
 
 ## Installation
-Currently, you cannot install the client.
+Currently, uClient-R only supports Windows.
 
 ## Features
 * Adblocker.
+* AutoUpdater
+
+## Discord
+Click [here](https://discord.com/invite/jncCtQ2) to join the Discord!
