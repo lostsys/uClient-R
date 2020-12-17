@@ -1,4 +1,4 @@
-const { app, BrowserWindow, screen, globalShortcut, shell} = require('electron');
+const { app, BrowserWindow, screen, globalShortcut, shell, clipboard} = require('electron');
 const { autoUpdater } = require("electron-updater");
 
 //Disables FPS.
@@ -38,6 +38,9 @@ function createWindow() {
     
     globalShortcut.register("F1",() => {
         if (new URL(gameWindow.webContents.getURL()).hostname != "repuls.io") gameWindow.loadURL("https://repuls.io");
+    })
+    globalShortcut.register("F2",() => {
+        if (new URL(clipboard.readText()).hostname == "repuls.io" && new URL(clipboard.readText()).pathname.split("?r=").length > 1) gameWindow.loadURL(clipboard.readText());
     })
     globalShortcut.register("F11",() => {
         gameWindow.setFullScreen(!gameWindow.isFullScreen());
@@ -80,7 +83,9 @@ function startRPC(){
     .then(() => {
         discord.setActivity({
             details: "Playing Repuls.io",
-            startTimestamp: Date.now()
+            startTimestamp: Date.now(),
+            largeImageKey: "logo",
+            largeImageText: "uClient-R"
         });
     })
     .catch((e) => { console.log(e) })
