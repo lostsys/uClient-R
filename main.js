@@ -8,8 +8,8 @@ app.commandLine.appendSwitch("disable-gpu-vsync");
 function createWindow() {
      //Creates BrowserWindows.
      let gameWindow = new BrowserWindow({
-		width: screen.width,
-		height: screen.height,
+		width: screen.getPrimaryDisplay().workAreaSize.width,
+		height: screen..getPrimaryDisplay().workAreaSize.height,
 		fullscreen: true,
 		show: false,
 		webPreferences: {
