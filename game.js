@@ -1,15 +1,12 @@
 document.addEventListener("DOMContentLoaded",() => {
     console.log = function(e){
-        if (e == "intermission") adplayer = undefined;
+        try {
+            setTimeout(() => {
+                if (document.getElementById("PokiUnitySDK_Ad_ad_box")) removeAds();
+            }, 100);
+        } catch (error) {}
     }
-    window.requestAnimationFrame(check);
-    function check(){
-        let code = ["monetization","idTips"];
-        code.forEach((e) => {
-            if (typeof document.getElementById(e) == "undefined") return;
-            if (document.getElementById(e).style.display != "none") document.getElementById(e).style.display = "none";
-        })
-        window.requestAnimationFrame(check);
-    }
+  
 })
 
+//All of this is useless
