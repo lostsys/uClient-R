@@ -13,7 +13,6 @@ The client wishes to provide the following:
 Currently, uClient-R only supports Windows.
 
 ## Features
-* Adblocker.
 * AutoUpdater
 
 ## Discord
