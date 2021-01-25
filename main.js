@@ -1,21 +1,18 @@
 const { app, BrowserWindow, screen, globalShortcut, shell, clipboard} = require('electron');
 const { autoUpdater } = require("electron-updater");
 
-//Disables FPS.
-app.commandLine.appendSwitch('disable-frame-rate-limit');
+app.commandLine.appendSwitch("disable-frame-rate-limit");
 app.commandLine.appendSwitch("disable-gpu-vsync");
+app.commandLine.appendSwitch("enable-accelerated-2d-canvas");
+app.commandLine.appendSwitch("ignore-gpu-blacklist");
 
 function createWindow() {
      //Creates BrowserWindows.
      let gameWindow = new BrowserWindow({
 		width: screen.getPrimaryDisplay().workAreaSize.width,
 		height: screen..getPrimaryDisplay().workAreaSize.height,
-		fullscreen: true,
+		fullscreen: false,
 		show: false,
-		webPreferences: {
-            nodeIntegration: false,
-            preload: `${__dirname}/game.js`
-		}
     })
     gameWindow.removeMenu();
     gameWindow.loadURL("https://repuls.io");
@@ -71,29 +68,3 @@ function checkForUpdate(){
         gameWindow.webContents.executeJavaScript(`alert("The latest update will be installed now.")`).then(() => autoUpdater.quitAndInstall())
     });
 }
-
-function startRPC(){
-    const RPC = require('discord-rpc');
-    const discord = new RPC.Client({
-        transport: "ipc",
-    });
-	discord.login({
-		clientId:  "788758313919709186"
-    })
-    .then(() => {
-        discord.setActivity({
-            details: "Playing Repuls.io",
-            startTimestamp: Date.now(),
-            largeImageKey: "logo",
-            largeImageText: "uClient-R"
-        });
-    })
-    .catch((e) => { console.log(e) })
-}
-
-app.on("ready",() => {
-    if (!app.requestSingleInstanceLock()) app.quit();
-    createWindow();
-    startRPC();
-})
-
