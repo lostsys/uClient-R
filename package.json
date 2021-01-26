@@ -1,0 +1,47 @@
+{
+  "name": "repuls",
+  "version": "0.0.1",
+  "description": "Repuls.io Client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "install-app-deps",
+    "build-win": "electron-builder -w",
+  },
+  "build": {
+    "appId": "",
+    "asar": false,
+    "productName": "Repuls-Client",
+    "win": {
+      "target": "nsis",
+      "icon": "build/game.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "license": "",
+      "artifactName": "Repuls-Client-Windows.${ext}",
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": true,
+      "runAfterFinish": true,
+      "shortcutName": "Repuls-Client",
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "author": "Sys",
+  "license": "ISC",
+  "dependencies": {
+    "dialogs": "^2.0.1",
+    "electron-is-dev": "^1.2.0",
+    "electron-localshortcut": "^3.2.1",
+    "electron-log": "^4.2.4",
+    "electron-prompt": "^1.6.0",
+    "electron-updater": "^4.3.4",
+    "update-electron-app": "^1.5.0"
+  },
+  "devDependencies": {
+    "electron": "^10.0.1",
+    "electron-builder": "^22.8.1"
+  }
+}
